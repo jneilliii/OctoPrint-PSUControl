@@ -34,7 +34,7 @@ class PSUControl(octoprint.plugin.StartupPlugin,
         self.onSysCommand = ''
         self.offSysCommand = ''
         self.postOnDelay = 0.0
-		self.connectOnPowerOnDelay = 0.0
+        self.connectOnPowerOnDelay = 0.0
         self.autoOn = False
         self.autoOnTriggerGCodeCommands = ''
         self._autoOnTriggerGCodeCommandsArray = []
