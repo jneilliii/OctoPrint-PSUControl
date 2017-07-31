@@ -330,7 +330,7 @@ class PSUControl(octoprint.plugin.StartupPlugin,
                 self._noSensing_isPSUOn = True
 			
             time.sleep(0.1 + self.postOnDelay)
-			self._printer.connect()
+            self._printer.connect()
             self.check_psu_state()
         
     def turn_psu_off(self):
