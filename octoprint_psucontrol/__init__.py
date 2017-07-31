@@ -34,6 +34,7 @@ class PSUControl(octoprint.plugin.StartupPlugin,
         self.onSysCommand = ''
         self.offSysCommand = ''
         self.postOnDelay = 0.0
+		self.connectOnPowerOnDelay = 0.0
         self.autoOn = False
         self.autoOnTriggerGCodeCommands = ''
         self._autoOnTriggerGCodeCommandsArray = []
@@ -45,6 +46,7 @@ class PSUControl(octoprint.plugin.StartupPlugin,
         self.idleTimeoutWaitTemp = 0
         self.enableSensing = False
         self.disconnectOnPowerOff = False
+        self.connectOnPowerOn = False
         self.senseGPIOPin = 0
         self.isPSUOn = False
         self._noSensing_isPSUOn = False
@@ -82,11 +84,17 @@ class PSUControl(octoprint.plugin.StartupPlugin,
         self.postOnDelay = self._settings.get_float(["postOnDelay"])
         self._logger.debug("postOnDelay: %s" % self.postOnDelay)
 
+        self.connectOnPowerOnDelay = self._settings.get_float(["connectOnPowerOnDelay"])
+        self._logger.debug("connectOnPowerOnDelay: %s" % self.connectOnPowerOnDelay)
+		
         self.enableSensing = self._settings.get_boolean(["enableSensing"])
         self._logger.debug("enableSensing: %s" % self.enableSensing)
 
         self.disconnectOnPowerOff = self._settings.get_boolean(["disconnectOnPowerOff"])
         self._logger.debug("disconnectOnPowerOff: %s" % self.disconnectOnPowerOff)
+		
+        self.connectOnPowerOn = self._settings.get_boolean(["connectOnPowerOn"])
+        self._logger.debug("connectOnPowerOn: %s" % self.connectOnPowerOn)
 
         self.senseGPIOPin = self._settings.get_int(["senseGPIOPin"])
         self._logger.debug("senseGPIOPin: %s" % self.senseGPIOPin)
@@ -329,8 +337,11 @@ class PSUControl(octoprint.plugin.StartupPlugin,
             if not self.enableSensing:
                 self._noSensing_isPSUOn = True
 			
-            time.sleep(0.1 + self.postOnDelay)
-            self._printer.connect()
+            if self.connectOnPowerOn:
+                time.sleep(0.1 + self.connectOnPowerOnDelay)
+                self._printer.connect()
+				
+            time.sleep(0.1 + self.postOnDelay)            
             self.check_psu_state()
         
     def turn_psu_off(self):
