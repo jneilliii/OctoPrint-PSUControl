@@ -405,6 +405,8 @@ class PSUControl(octoprint.plugin.StartupPlugin,
             disconnectOnPowerOff = False,
             senseGPIOPin = 0,
             autoOn = False,
+            connectOnPowerOn = False,
+            connectOnPowerOnDelay = 0.0,
             autoOnTriggerGCodeCommands = "G0,G1,G2,G3,G10,G11,G28,G29,G32,M104,M109,M140,M190",
             enablePowerOffWarningDialog = True,
             powerOffWhenIdle = False,
@@ -433,6 +435,8 @@ class PSUControl(octoprint.plugin.StartupPlugin,
         self.postOnDelay = self._settings.get_float(["postOnDelay"])
         self.enableSensing = self._settings.get_boolean(["enableSensing"])
         self.disconnectOnPowerOff = self._settings.get_boolean(["disconnectOnPowerOff"])
+        self.connectOnPowerOn = self._settings.get_boolean(["connectOnPowerOn"])
+        self.connectOnPowerOnDelay = self._settings.get_float(["connectOnPowerOnDelay"])
         self.senseGPIOPin = self._settings.get_int(["senseGPIOPin"])
         self.autoOn = self._settings.get_boolean(["autoOn"])
         self.autoOnTriggerGCodeCommands = self._settings.get(["autoOnTriggerGCodeCommands"])
